@@ -1,6 +1,6 @@
 {
   "name": "hypermediator",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Generic hypermedia client",
   "homepage": "https://github.com/dschulten/hypermediator",
   "author": {
