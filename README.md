@@ -1,5 +1,5 @@
 # hypermediator [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
-> Generic hypermedia client
+> Generic hypermedia client with support for hydra
 
 ## Installation
 
