@@ -1,0 +1,43 @@
+{
+  "name": "hypermediator",
+  "version": "0.0.0",
+  "description": "Generic hypermedia client",
+  "homepage": "https://github.com/dschulten/hypermediator",
+  "author": {
+    "name": "Dietrich Schulten",
+    "email": "ds@escalon.de",
+    "url": "https://github.com/dschulten"
+  },
+  "files": [
+    "lib"
+  ],
+  "main": "lib\\index.js",
+  "keywords": [
+    "hypermedia",
+    "javascript",
+    "node"
+  ],
+  "repository": "dschulten/hypermediator",
+  "devDependencies": {
+    "gulp": "^3.6.0",
+    "gulp-eslint": "^1.0.0",
+    "gulp-exclude-gitignore": "^1.0.0",
+    "gulp-istanbul": "^0.9.0",
+    "gulp-mocha": "^2.0.0",
+    "gulp-plumber": "^1.0.0",
+    "gulp-nsp": "^2.1.0",
+    "gulp-coveralls": "^0.1.0",
+    "mockery": "^1.4.0"
+  },
+  "scripts": {
+    "prepublish": "gulp prepublish",
+    "test": "gulp"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "JSONPath": "s3u/JSONPath",
+    "fetch-mock": "^2.3.1",
+    "jsonld": "^0.4.2",
+    "node-fetch": "^1.3.3"
+  }
+}
