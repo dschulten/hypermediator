@@ -24,10 +24,24 @@ $ npm install --save node-fetch
 var HyperMediator = require('hypermediator');
 
 var hyperMediator = new HyperMediator('<url to api entry point>');
-hyperMediator.get('<link relation>').then(function(related) {
-  var responseBody = related.responseBody();
+
+// access related resource
+hyperMediator.get('<first link relation>').then(function(firstHop) {
+    var responseBody = firstHop.responseBody();
+    return firstHop.get('<second link relation>');
+  })
+  .then(function(secondHop) {
+    var responseBody = secondHop.responseBody();
+  };
 });
 
+// iterate over collection
+hypermediator.get('<collection link relation>')
+  .then(function (collection) {
+    Promise.all(collection).then(function (items) {
+      // work with items array
+    });
+  });
 ```
 ## License
 
