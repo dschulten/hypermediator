@@ -23,7 +23,11 @@ $ npm install --save node-fetch
 ```js
 var Hypermediator = require('hypermediator');
 
-new HyperMediator('');
+var hypermediator = new HyperMediator('\<url to api entry point\>');
+hypermediator.get('<link relation>').then(function(related) {
+  var responseBody = related.responseBody();
+});
+
 ```
 ## License
 
