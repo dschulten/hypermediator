@@ -21,10 +21,10 @@ $ npm install --save node-fetch
 ## Usage
 
 ```js
-var Hypermediator = require('hypermediator');
+var HyperMediator = require('hypermediator');
 
-var hypermediator = new HyperMediator('\<url to api entry point\>');
-hypermediator.get('<link relation>').then(function(related) {
+var hyperMediator = new HyperMediator('\<url to api entry point\>');
+hyperMediator.get('<link relation>').then(function(related) {
   var responseBody = related.responseBody();
 });
 
