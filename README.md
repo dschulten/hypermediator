@@ -13,7 +13,7 @@ If you are running in a browser, include whatwg-fetch for http requests.
 $ npm install --save whatwg-fetch
 ```
 
-If your are running in a node environment, include node-fetch.
+If you are running in a node environment, include node-fetch.
 ```sh
 $ npm install --save node-fetch
 ```

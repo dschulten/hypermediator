@@ -7,14 +7,14 @@ describe('HydraAffordanceFinder', function () {
 
   var affordanceFinder = new HydraAffordanceFinder();
 
-  var currentResource = {
+  var expandedResource = {
     '@type': 'http://schema.org/CafeOrCoffeeShop',
     'http://schema.org/name': ['Kaffeehaus Hagen'],
     'http://schema.org/address': [{'@id': '/address'}]
   };
 
   it('should provide affordance for rel', function () {
-    var affordance = affordanceFinder.findAffordance(currentResource, 'http://schema.org/address');
+    var affordance = affordanceFinder.findAffordance(expandedResource, 'http://schema.org/address');
     assert.equal(affordance.href, '/address');
   });
 
