@@ -9,7 +9,7 @@ var Symbol = require('es6-symbol');
 
 describe('HyperMediator', function () {
 
-  this.timeout(5000);
+  //this.timeout(5000);
   /**
    * @type HyperMediator
    */
@@ -22,7 +22,7 @@ describe('HyperMediator', function () {
       warnOnUnregistered: false
     });
     var theFetchMock = fetchMock
-      .mock('http://www.markus-lanthaler.com/hydra/event-api/contexts/EntryPoint.jsonld',
+      .mock('http://www.markus-lanthaler.com/hydra/event-api/',
         {
           body: {
             '@context': {
@@ -33,50 +33,7 @@ describe('HyperMediator', function () {
                 '@id': 'vocab:EntryPoint/events',
                 '@type': '@id'
               }
-            }
-          },
-          headers: {
-            'Content-Type': 'application/ld+json',
-            Link: '<http://api.example.com/doc/>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"'
-          }
-        }
-      )
-      .mock('http://www.markus-lanthaler.com/hydra/event-api/contexts/EventCollection.jsonld',
-        {
-          body: {
-            '@context': {
-              hydra: 'http://www.w3.org/ns/hydra/core#',
-              vocab: 'http://www.markus-lanthaler.com/hydra/event-api/vocab#',
-              EventCollection: 'vocab:EventCollection',
-              members: 'http://www.w3.org/ns/hydra/core#member'
-            }
-          },
-          headers: {
-            'Content-Type': 'application/ld+json',
-            Link: '<http://api.example.com/doc/>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"'
-          }
-        }
-      )
-      .mock('http://www.markus-lanthaler.com/hydra/event-api/contexts/Event.jsonld',
-        {
-          body: {
-            '@context': {
-              '@vocab': 'http://schema.org/',
-              hydra: 'http://www.w3.org/ns/hydra/core#',
-              vocab: 'http://www.markus-lanthaler.com/hydra/event-api/vocab#',
-              Event: 'http://schema.org/Event'
-            }
-          },
-          headers: {
-            'Content-Type': 'application/ld+json',
-            Link: '<http://api.example.com/doc/>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"'
-          }
-        }
-      )
-      .mock('http://www.markus-lanthaler.com/hydra/event-api/',
-        {
-          body: {
-            '@context': '/hydra/event-api/contexts/EntryPoint.jsonld',
+            },
             '@id': '/hydra/event-api/',
             '@type': 'EntryPoint',
             events: '/hydra/event-api/events/'
@@ -90,7 +47,12 @@ describe('HyperMediator', function () {
       .mock('http://www.markus-lanthaler.com/hydra/event-api/events/',
         {
           body: {
-            '@context': '/hydra/event-api/contexts/EventCollection.jsonld',
+            '@context': {
+              hydra: 'http://www.w3.org/ns/hydra/core#',
+              vocab: 'http://www.markus-lanthaler.com/hydra/event-api/vocab#',
+              EventCollection: 'vocab:EventCollection',
+              members: 'http://www.w3.org/ns/hydra/core#member'
+            },
             '@id': 'http://www.markus-lanthaler.com/hydra/event-api/events/',
             '@type': 'EventCollection',
             members: [
@@ -114,18 +76,23 @@ describe('HyperMediator', function () {
       .mock('http://www.markus-lanthaler.com/hydra/event-api/events/39',
         {
           body: {
-            '@context': '/hydra/event-api/contexts/Event.jsonld',
+            '@context': {
+              '@vocab': 'http://schema.org/',
+              hydra: 'http://www.w3.org/ns/hydra/core#',
+              vocab: 'http://www.markus-lanthaler.com/hydra/event-api/vocab#',
+              Event: 'http://schema.org/Event'
+            },
             '@id': '/hydra/event-api/events/39',
             '@type': 'Event',
             name: 'James Bond 007 - Spectre',
             location: {
-              '@type': 'http://schema.org/Place',
-              'http://schema.org/address': {
-                '@type': 'http://schema.org/PostalAddress',
-                'http://schema.org/addressLocality': 'Denver',
-                'http://schema.org/addressRegion': 'CO',
-                'http://schema.org/postalCode': '80209',
-                'http://schema.org/streetAddress': '7 S. Broadway'
+              '@type': 'Place',
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Denver',
+                addressRegion: 'CO',
+                postalCode: '80209',
+                streetAddress: '7 S. Broadway'
               },
               name: 'The Hi-Dive'
             },
@@ -197,7 +164,7 @@ describe('HyperMediator', function () {
           assert.equal(second['@type'][0], 'http://schema.org/Event');
           assert.equal(second['@id'], 'http://www.markus-lanthaler.com/hydra/event-api/events/39');
           assert.equal(second['http://schema.org/name'][0]['@value'], 'James Bond 007 - Spectre');
-          //assert.equal(second['http://schema.org/location'][0]['@value'], 'James Bond 007 - Spectre');
+          assert.equal(second['http://schema.org/location'][0]['http://schema.org/name'][0]['@value'], 'The Hi-Dive');
         });
       });
   });
