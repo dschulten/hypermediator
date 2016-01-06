@@ -9,6 +9,7 @@ var Symbol = require('es6-symbol');
 
 describe('HyperMediator', function () {
 
+  this.timeout(5000);
   /**
    * @type HyperMediator
    */
@@ -183,66 +184,35 @@ describe('HyperMediator', function () {
       });
   });
 
-  it('should iterate over collection', function () {
+  it('should iterate over collection, dereferencing links', function () {
     return hypermediator.get('http://www.markus-lanthaler.com/hydra/event-api/vocab#EntryPoint/events')
       .then(function (eventCollection) {
-        var eventIterator = eventCollection[Symbol.iterator]();
 
-        var firstEvent = eventIterator.next();
-        assert.equal(firstEvent.value.responseBody()['@id'], 'http://www.markus-lanthaler.com/hydra/event-api/events/38');
-        assert.equal(firstEvent.value.responseBody()['@type'][0], 'http://schema.org/Event');
+        return Promise.all(eventCollection).then(function (items) {
+          var first = items[0].responseBody();
+          assert.equal(first['@id'], 'http://www.markus-lanthaler.com/hydra/event-api/events/38');
+          assert.equal(first['@type'][0], 'http://schema.org/Event');
 
-        var secondEvent = eventIterator.next();
-        assert.equal(secondEvent.value.responseBody()['@type'][0], 'http://schema.org/Event');
-        assert.equal(secondEvent.value.responseBody()['@id'], 'http://www.markus-lanthaler.com/hydra/event-api/events/39');
-
-        var eol = eventIterator.next();
-        assert.equal(eol.value, undefined);
-        assert.equal(eol.done, true);
+          var second = items[1].responseBody();
+          assert.equal(second['@type'][0], 'http://schema.org/Event');
+          assert.equal(second['@id'], 'http://www.markus-lanthaler.com/hydra/event-api/events/39');
+          assert.equal(second['http://schema.org/name'][0]['@value'], 'James Bond 007 - Spectre');
+          //assert.equal(second['http://schema.org/location'][0]['@value'], 'James Bond 007 - Spectre');
+        });
       });
   });
 
-  it('should have sub-hypermediators as collection items', function () {
-    return hypermediator.get('http://www.markus-lanthaler.com/hydra/event-api/vocab#EntryPoint/events')
-      .then(function (eventCollection) {
-        var eventIterator = eventCollection[Symbol.iterator]();
-        eventIterator.next(); // we want the second item
-        return eventIterator.next().value.get(); // dereference item URL
-      })
-      .then(function (eventItem) {
-        var body = eventItem.responseBody();
-        assert.equal(body['@type'][0], 'http://schema.org/Event');
-        assert.equal(body['@id'], 'http://www.markus-lanthaler.com/hydra/event-api/events/39');
-        assert.equal(body['http://schema.org/name'][0]['@value'], 'James Bond 007 - Spectre');
-      });
-  });
-
-  it('should support multiple hops', function () {
-    return hypermediator.get('http://www.markus-lanthaler.com/hydra/event-api/vocab#EntryPoint/events')
-      .then(function (eventCollection) {
-        var eventIterator = eventCollection[Symbol.iterator]();
-        eventIterator.next(); // we want the second item
-        return eventIterator.next().value.get(); // dereference item URL
-      })
-      .then(function (eventItem) {
-        var body = eventItem.responseBody();
-        assert.equal(body['@type'][0], 'http://schema.org/Event');
-        assert.equal(body['@id'], 'http://www.markus-lanthaler.com/hydra/event-api/events/39');
-        assert.equal(body['http://schema.org/name'][0]['@value'], 'James Bond 007 - Spectre');
-      });
-  });
 
   it('should return link if item does not dereference', function () {
     return hypermediator.get('http://www.markus-lanthaler.com/hydra/event-api/vocab#EntryPoint/events')
       .then(function (eventCollection) {
         var eventIterator = eventCollection[Symbol.iterator]();
-        return eventIterator.next().value.get();
-      })
-      .then(function (eventItem) {
-        var body = eventItem.responseBody();
-        assert.equal(body['@type'][0], 'http://schema.org/Event');
-        assert.equal(body['@id'], 'http://www.markus-lanthaler.com/hydra/event-api/events/38');
-        assert.equal(body['http://schema.org/name'], undefined);
+        return eventIterator.next().value.then(function (eventItem) {
+          var body = eventItem.responseBody();
+          assert.equal(body['@type'][0], 'http://schema.org/Event');
+          assert.equal(body['@id'], 'http://www.markus-lanthaler.com/hydra/event-api/events/38');
+          assert.equal(body['http://schema.org/name'], undefined);
+        });
       });
   });
 
