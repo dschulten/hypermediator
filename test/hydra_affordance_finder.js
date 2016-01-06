@@ -9,8 +9,8 @@ describe('HydraAffordanceFinder', function () {
 
   var currentResource = {
     '@type': 'http://schema.org/CafeOrCoffeeShop',
-    'http://schema.org/name': 'Kaffeehaus Hagen',
-    'http://schema.org/address': {'@id': '/address'}
+    'http://schema.org/name': ['Kaffeehaus Hagen'],
+    'http://schema.org/address': [{'@id': '/address'}]
   };
 
   it('should provide affordance for rel', function () {

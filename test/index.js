@@ -78,9 +78,7 @@ describe('HyperMediator', function () {
           body: {
             '@context': {
               '@vocab': 'http://schema.org/',
-              hydra: 'http://www.w3.org/ns/hydra/core#',
-              vocab: 'http://www.markus-lanthaler.com/hydra/event-api/vocab#',
-              Event: 'http://schema.org/Event'
+              hydra: 'http://www.w3.org/ns/hydra/core#'
             },
             '@id': '/hydra/event-api/events/39',
             '@type': 'Event',
